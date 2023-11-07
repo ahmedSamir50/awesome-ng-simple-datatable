@@ -1,0 +1,77 @@
+<div *ngIf="isExportable && items&&items.length > 0">
+  <div ngbDropdown class="d-flex gap-3 mb-4 d-inline-block">
+    <a role="button" class="btn btn-outline-light export-toggle" id="dropdownMenu" ngbDropdownToggle>
+      <img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MzcuOTcgNDM3LjMyIj4NCiAgICA8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNMjE5LjA5LDI5OC42NWExNiwxNiwwLDAsMS0xNi0xNlY1NC42TDE1OC45Myw5OC43NmExNiwxNiwwLDAsMS0yMi42MS0yMi42MUwyMDcuNzksNC42OGExNiwxNiwwLDAsMSwyMi42MSwwbDcxLjQ3LDcxLjQ3YTE2LDE2LDAsMSwxLTIxLjgyLDIzLjQxYy0uMjctLjI2LS41NC0uNTMtLjgtLjhMMjM1LjA5LDU0LjZWMjgyLjY1QTE2LDE2LDAsMCwxLDIxOS4wOSwyOTguNjVaTTE0OS41NSw0MDUuMzJjLTQ2LjA4LDAtNzQuMjItOS4zMi05MS4yLTI2LjMzUzMyLDMzMy44NSwzMiwyODcuNzdWMjg1YzAtNDEuNDMsNy41NS02OC4zNywyMS40Mi04NS42NUM2Ni44OCwxODIuNDksODguNjQsMTcyLDEyNCwxNjguNjdoMGExNiwxNiwwLDAsMC0zLTMxLjg3Yy00MC4yMSwzLjczLTcxLjY4LDE2LjQ3LTkyLjU2LDQyLjU2QzcuOTEsMjA1LDAsMjQwLjY3LDAsMjg1djIuNzdDMCwzMzcsOS43NywzNzUuNjcsMzUuNzEsNDAxLjYzczY0LjU4LDM1LjY5LDExMy44NCwzNS42OWExNiwxNiwwLDAsMCwwLTMyWk00MDkuMTMsMTc4Ljc2QzM4OCwxNTIuNjMsMzU2LDE0MC4wOCwzMTUuMiwxMzYuNThoMGExNiwxNiwwLDAsMC0xNy4zMSwxNC41N2gwYTE2LDE2LDAsMCwwLDE0LjU3LDE3LjMxYzM2LDMuMTEsNTguMTUsMTMuNjEsNzEuODMsMzAuNDYsMTQsMTcuMywyMS42OSw0NC4zNSwyMS42OSw4Ni4wOHYyLjc3YzAsNDYuMS05LjMyLDc0LjIyLTI2LjMyLDkxLjIycy00NS4xMiwyNi4zMy05MS4yMiwyNi4zM0gyNDAuNjRhMTYsMTYsMCwwLDAsMCwzMmg0Ny43OWM0OS4yOCwwLDg3LjkxLTkuNzcsMTEzLjg1LTM1LjY5UzQzOCwzMzcuMDUsNDM4LDI4Ny43N1YyODVDNDM4LDI0MC4zMyw0MzAsMjA0LjQ0LDQwOS4xMywxNzguNzZaIi8+DQo8L3N2Zz4=" />
+      <span translate>Exporter.ExportOptions</span>
+    </a>
+    <!-- <button *ngIf="btnIsDisplayed(ExportAs.PDF)" type="button" class="btn btn-outline-light gap-2 py-2" (click)="exportPDF()">
+                  <span>PDF</span>
+                  <i-bs width="1.5rem" height="1.5rem" [name]="iconNames.FilePdfFill"></i-bs>
+              </button> -->
+    <!-- if has no more options for lazy loading -->
+    <div *ngIf="(!isLazyLoading && !fullDataURLForExportCallbackFunction ) ||(!fullDataURLForExportCallbackFunction)">
+      <ul ngbDropdownMenu aria-labelledby="dropdownMenu">
+        <li class="dropdown-submenu">
+          <a ngbDropdownItem role="button" class="btn btn-outline-light" (click)="exportEXCEL('currentPage')"
+            *ngIf="btnIsDisplayed(ExportAs.EXCEL)">
+            <!-- <i-bs width="1.5rem" height="1.5rem" [name]="iconNames.FileExcelFill"></i-bs> -->
+            <img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MjYuNjkgNDY2LjA1Ij4NCiAgICA8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNMTguMzUsMzguNCwyODYuNTEuMTFhMTAuNjYsMTAuNjYsMCwwLDEsMTIuMDcsOSwxMS4xLDExLjEsMCwwLDEsLjExLDEuNTJWNDU1LjM4QTEwLjY3LDEwLjY3LDAsMCwxLDI4OCw0NjYuMDVhMTAuNTYsMTAuNTYsMCwwLDEtMS40OS0uMTFMMTguMzMsNDI3LjY1QTIxLjMzLDIxLjMzLDAsMCwxLDAsNDA2LjUzdi0zNDdBMjEuMzMsMjEuMzMsMCwwLDEsMTguMzMsMzguNFpNNDIuNjksNzhWMzg4TDI1Niw0MTguNVY0Ny41NVpNMzIwLDM4Mi4zNmg2NFY4My42OUgzMjBWNDFoODUuMzNhMjEuMzMsMjEuMzMsMCwwLDEsMjEuMzQsMjEuMzNWNDAzLjY5QTIxLjMzLDIxLjMzLDAsMCwxLDQwNS4zNSw0MjVIMzIwWk0xNzUsMjMzbDU5Ljc0LDg1LjMzaC01MS4ybC0zNC4xNC00OC43Ny0zNC4xMyw0OC43N0g2NEwxMjMuNzUsMjMzLDY0LDE0Ny42OWg1MS4ybDM0LjEzLDQ4Ljc3LDM0LjE0LTQ4Ljc3aDUxLjJaIi8+DQo8L3N2Zz4=" />
+            <span>Excel</span>
+          </a>
+        </li>
+        <li>
+          <button ngbDropdownItem *ngIf="btnIsDisplayed(ExportAs.CSV)" type="button" class="btn btn-outline-light"
+            (click)="exportAsCSV('currentPage')">
+            <!-- <i-bs width="1.5rem" height="1.5rem" [name]="iconNames.FileTextFill"></i-bs> -->
+            <img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNDI2LjY3Ij4NCiAgICA8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNMCwwSDM0MS40NEE0Mi42LDQyLjYsMCwwLDEsMzg0LDQyLjQ1VjM4NC4yMWE0Mi41MSw0Mi41MSwwLDAsMS00Mi41Niw0Mi40NkgwWk04NS4zMyw0Mi42N0g0Mi42N1YzODRIODUuMzNaTTEyOCwzODRIMzQxLjMzVjQyLjY3SDEyOFptNDIuNjctODUuMzNhNjQsNjQsMCwwLDEsMTI4LDBabTY0LTg1LjM0YTQyLjY3LDQyLjY3LDAsMSwxLDQyLjY2LTQyLjY2QTQyLjY2LDQyLjY2LDAsMCwxLDIzNC42NywyMTMuMzNabTE3MC42Ni0xMjhINDQ4djg1LjM0SDQwNS4zM1ptMCwxMjhINDQ4djg1LjM0SDQwNS4zM1oiLz4NCjwvc3ZnPg==" />
+            <span>CSV</span>
+          </button>
+        </li>
+      </ul>
+    </div>
+    <!-- else has  more options for lazy loading -->
+    <div *ngIf="(isLazyLoading && fullDataURLForExportCallbackFunction ) ||(fullDataURLForExportCallbackFunction)">
+      <ul ngbDropdownMenu class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+        <li ngbDropdown class="dropdown-submenu">
+          <a ngbDropdownToggle tabindex="-1" id="dropdownOptions1" role="button" class="dropdown-toggle"
+            *ngIf="btnIsDisplayed(ExportAs.EXCEL)">
+            <!-- <i-bs width="1.5rem" height="1.5rem" [name]="iconNames.FileExcelFill"></i-bs> -->
+            <img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0MjYuNjkgNDY2LjA1Ij4NCiAgICA8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNMTguMzUsMzguNCwyODYuNTEuMTFhMTAuNjYsMTAuNjYsMCwwLDEsMTIuMDcsOSwxMS4xLDExLjEsMCwwLDEsLjExLDEuNTJWNDU1LjM4QTEwLjY3LDEwLjY3LDAsMCwxLDI4OCw0NjYuMDVhMTAuNTYsMTAuNTYsMCwwLDEtMS40OS0uMTFMMTguMzMsNDI3LjY1QTIxLjMzLDIxLjMzLDAsMCwxLDAsNDA2LjUzdi0zNDdBMjEuMzMsMjEuMzMsMCwwLDEsMTguMzMsMzguNFpNNDIuNjksNzhWMzg4TDI1Niw0MTguNVY0Ny41NVpNMzIwLDM4Mi4zNmg2NFY4My42OUgzMjBWNDFoODUuMzNhMjEuMzMsMjEuMzMsMCwwLDEsMjEuMzQsMjEuMzNWNDAzLjY5QTIxLjMzLDIxLjMzLDAsMCwxLDQwNS4zNSw0MjVIMzIwWk0xNzUsMjMzbDU5Ljc0LDg1LjMzaC01MS4ybC0zNC4xNC00OC43Ny0zNC4xMyw0OC43N0g2NEwxMjMuNzUsMjMzLDY0LDE0Ny42OWg1MS4ybDM0LjEzLDQ4Ljc3LDM0LjE0LTQ4Ljc3aDUxLjJaIi8+DQo8L3N2Zz4=" />
+
+            <span>Excel</span>
+          </a>
+
+          <ul ngbDropdownMenu aria-labelledby="dropdownOptions1" display="dynamic" placement="right">
+            <li>
+              <a role="button" ngbDropdownItem class="dropdown-item" (click)="exportEXCEL('all')"
+                translate>Exporter.AllPages</a>
+            </li>
+            <li>
+              <a role="button" ngbDropdownItem class="dropdown-item" (click)="exportEXCEL('currentPage')"
+                translate>Exporter.CurrentPage</a>
+            </li>
+          </ul>
+        </li>
+        <li ngbDropdown class="dropdown-submenu">
+          <a ngbDropdownToggle tabindex="-1" id="dropdownOptions1" role="button" class="dropdown-toggle"
+            *ngIf="btnIsDisplayed(ExportAs.CSV)">
+            <!-- <i-bs width="1.5rem" height="1.5rem" [name]="iconNames.FileTextFill"></i-bs> -->
+            <img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0NDggNDI2LjY3Ij4NCiAgICA8cGF0aCBmaWxsPSIjM0EzQTNBIiBkPSJNMCwwSDM0MS40NEE0Mi42LDQyLjYsMCwwLDEsMzg0LDQyLjQ1VjM4NC4yMWE0Mi41MSw0Mi41MSwwLDAsMS00Mi41Niw0Mi40NkgwWk04NS4zMyw0Mi42N0g0Mi42N1YzODRIODUuMzNaTTEyOCwzODRIMzQxLjMzVjQyLjY3SDEyOFptNDIuNjctODUuMzNhNjQsNjQsMCwwLDEsMTI4LDBabTY0LTg1LjM0YTQyLjY3LDQyLjY3LDAsMSwxLDQyLjY2LTQyLjY2QTQyLjY2LDQyLjY2LDAsMCwxLDIzNC42NywyMTMuMzNabTE3MC42Ni0xMjhINDQ4djg1LjM0SDQwNS4zM1ptMCwxMjhINDQ4djg1LjM0SDQwNS4zM1oiLz4NCjwvc3ZnPg==" />
+
+            <span>CSV</span>
+          </a>
+          <ul ngbDropdownMenu aria-labelledby="dropdownOptions1" display="dynamic" placement="right">
+            <li>
+              <a role="button" ngbDropdownItem class="dropdown-item" (click)="exportAsCSV('all')"
+                translate>Exporter.AllPages</a>
+            </li>
+            <li>
+              <a role="button" ngbDropdownItem class="dropdown-item" (click)="exportAsCSV('currentPage')"
+                translate>Exporter.CurrentPage</a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

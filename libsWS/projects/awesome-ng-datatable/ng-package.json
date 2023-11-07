@@ -1,0 +1,14 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/awesome-ng-datatable",
+  "lib": {
+    "entryFile": "src/public-api.ts"
+  },
+  "allowedNonPeerDependencies": [
+    "exceljs",
+    "@ngx-translate/core",
+    "file-saver",
+    "ngx-bootstrap-icons",
+    "underscore"
+  ]
+}

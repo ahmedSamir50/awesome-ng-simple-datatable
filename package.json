@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@ngx-translate/core": "^15.0.0",
+    "exceljs": "^4.3.0",
+    "file-saver": "^2.0.5",
+    "ngx-bootstrap-icons": "^1.9.2",
+    "underscore": "^1.13.6"
+  },
+  "devDependencies": {
+    "@types/file-saver": "^2.0.6",
+    "@types/underscore": "^1.11.12"
+  }
+}

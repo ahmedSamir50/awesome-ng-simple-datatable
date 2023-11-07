@@ -1,0 +1,22 @@
+{
+  "name": "awesome-ng-datatable",
+  "version": "0.0.8",
+  "peerDependencies": {
+    "@angular/common": "^15.1.0",
+    "@angular/core": "^15.1.0",
+    "@ngx-translate/core": "^15.0.0",
+    "exceljs": "^4.3.0",
+    "file-saver": "^2.0.5",
+    "ngx-bootstrap-icons": "^1.9.2",
+    "underscore": "^1.13.6"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0",
+    "@ngx-translate/core": "^15.0.0",
+    "exceljs": "^4.3.0",
+    "file-saver": "^2.0.5",
+    "ngx-bootstrap-icons": "^1.9.2",
+    "underscore": "^1.13.6"
+  },
+  "sideEffects": false
+}

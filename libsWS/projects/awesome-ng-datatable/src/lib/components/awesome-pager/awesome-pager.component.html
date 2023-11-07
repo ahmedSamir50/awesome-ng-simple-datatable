@@ -1,0 +1,43 @@
+<div class="row">
+  <div class="col-12 col-md-2 mb-3 mb-md-0" *ngIf="totalItemsCount > 0">
+      <select class="form-select form-select-sm" (change)="pageSizeChanged($event)" [(ngModel)]="pageSize">
+          <option [value]="5">5</option>
+          <option [value]="10">10</option>
+          <option [value]="20">20</option>
+          <option [value]="50">50</option>
+          <option [value]="100">100</option>
+      </select>
+  </div>
+  <ng-container *ngIf="pager.pages && pager.pages.length >= 1">
+      <div class="col-12 col-md-10 d-flex justify-content-center align-items-center">
+          <nav aria-label="List pages">
+              <ul class="pagination">
+                  <li class="page-item">
+                      <button class="page-link nav-btn" slot="icon-only" aria-label="Previous" (click)="previous()" [disabled]="currentPage == 1">
+                        <img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5LjIyIDE1LjM4Ij48cGF0aCBkPSJNOSw3LjEyLDEuMzIuMiwxLjI0LjE0QS44LjgsMCwwLDAsLjIyLjNMLjE0LjQyYS44MS44MSwwLDAsMCwuMTUsMWw3LDYuMjlMLjI5LDE0bC0uMDkuMWEuNzkuNzksMCwwLDAsMCwxLC43OC43OCwwLDAsMCwuNTUuMjZoMGEuNzguNzgsMCwwLDAsLjUzLS4yTDksOC4zMWwuMS0uMTFBLjguOCwwLDAsMCw5LDcuMTJaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMC4wMyAtMC4wMikiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" />
+                      </button>
+                  </li>
+                  <ng-container *ngFor="let page of  pager.pages">
+                      <ng-container *ngIf="page === currentPage">
+                          <li class="page-item active" fill="clear" aria-current="page">
+                              <button (click)="changePage(page)" class="page-link no-ripple">{{page}}</button>
+                          </li>
+                      </ng-container>
+                      <ng-container *ngIf="page !== currentPage">
+                          <li class="page-item">
+                              <button (click)="changePage(page)" fill="clear" class="page-link no-ripple">{{page}}</button>
+                          </li>
+                      </ng-container>
+                  </ng-container>
+
+                  <li class="page-item">
+                      <button class="page-link nav-btn" slot="icon-only" aria-label="Next" (click)="next()" [disabled]="currentPage == pager.totalPages">
+                        <img alt="" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA5LjIyIDE1LjM4Ij48cGF0aCBkPSJNLjI5LDguMzEsOCwxNS4yMmwuMDkuMDZhLjc3Ljc3LDAsMCwwLDEtLjE2TDkuMTMsMTVBLjgyLjgyLDAsMCwwLDksMTRMMiw3LjcxLDksMS40MmwuMS0uMUEuODIuODIsMCwwLDAsOSwuMjguNzkuNzksMCwwLDAsOC40OSwwaDBhLjguOCwwLDAsMC0uNTMuMjFMLjI5LDcuMTJsLS4xLjExQS44LjgsMCwwLDAsLjI5LDguMzFaIiB0cmFuc2Zvcm09InRyYW5zbGF0ZSgtMC4wMyAtMC4wMikiIGZpbGw9IiNmZmYiLz48L3N2Zz4=" />
+                      </button>
+                  </li>
+              </ul>
+
+          </nav>
+      </div>
+  </ng-container>
+</div>

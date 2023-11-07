@@ -1,0 +1,101 @@
+<div class="row">
+  <div class="col-12">
+      <h3 *ngIf="showDataTitle" class="sub-title">{{dataTitle}}</h3>
+      <ng-container *ngIf="appendToHeaderInlineTemplate">
+          <ng-container #appendToHeaderInlineTemplate *ngTemplateOutlet="appendToHeaderInlineTemplate;">
+          </ng-container>
+      </ng-container>
+  </div>
+</div>
+
+<div class="row" *ngIf="isExportable && (getTableViewItems()?.length)??0 > 0">
+  <div class="col-12">
+      <lib-awesome-table-exporter [items]="tableItems"
+      [ExportAsBtns]="ExportAsBtns" [exportedDataTitle]="dataTitle"
+      [columnConfigs]="columnConfigs"
+      [fullDataURLForExportCallbackFunction]="fullDataURLForExportCallbackFunction">
+      </lib-awesome-table-exporter>
+  </div>
+
+</div>
+
+<div class="row" *ngIf="showTotalItemsCount">
+  <div class="col-12 d-flex justify-content-end mb-3">
+      <div class="table-total-count">
+          <span>{{'totalItemsCount'|translate}} </span>
+          <span> {{getTotalItemsCount()}} </span>
+
+      </div>
+  </div>
+
+</div>
+
+<div class="row">
+
+  <div class="col-12">
+      <div class="table-responsive mb-5">
+
+          <table class="table table-bordered">
+              <thead>
+                  <th [attr.data-th]="col.headerIsTranslationKey ?(col.header|translate):col.header" *ngFor="let col of columnConfigs" [ngStyle]="{'width':((col.colSize??1)/12*100)}">
+                      <span *ngIf="col.headerIsTranslationKey">{{ col.header | translate }}</span>
+                      <span *ngIf="!col.headerIsTranslationKey">{{ col.header }}</span>
+                  </th>
+                  <th *ngIf="showDefaultOptionsColumn">{{'Actions' | translate}}</th>
+              </thead>
+              <ng-container *ngIf="(getTableViewItems()?.length)??0>0; else elseEmptyTemplate">
+                  <tbody>
+                      <tr *ngFor="let row of getTableViewItems()" [class.selected]="selectedRow === row && enableSelection" (click)="tableRowClicked(row)">
+                          <td [attr.data-th]="col.headerIsTranslationKey ?(col.header|translate):col.header" *ngFor="let col of columnConfigs">
+                              <ng-container *ngIf="!col.customCellTemplate; else customCellTemplate">
+                                  <!-- if property is object in depth -->
+                                  <ng-container *ngIf="col.key.toLowerCase().indexOf('.')!==-1">
+                                      <ng-container *ngIf="col.key.toLowerCase().indexOf('date')!==-1">
+                                          {{ getDatePropFormatted(row , col.key , true , col.suffixKey) }}
+                                      </ng-container>
+                                      <ng-container *ngIf="col.key.toLowerCase().indexOf('date')===-1">
+                                          {{ extractDeepProp( row , col.key) }} {{col.suffixKey??"" | translate}}
+                                      </ng-container>
+                                  </ng-container>
+                                  <!-- If Normal object prop -->
+                                  <ng-container *ngIf="col.key.toLowerCase().indexOf('.')===-1">
+                                      <ng-container *ngIf="col.key.toLowerCase().indexOf('date')!==-1">
+                                          {{ getDatePropFormatted(row , col.key , false , col.suffixKey) }}
+                                      </ng-container>
+                                      <ng-container *ngIf="col.key.toLowerCase().indexOf('date')===-1">
+                                          {{ extractSimpleProp( row , col.key) }} {{col.suffixKey??"" | translate}}
+                                      </ng-container>
+                                  </ng-container>
+
+                              </ng-container>
+                              <ng-template #customCellTemplate *ngTemplateOutlet="col.customCellTemplate;context: { $implicit: row }">
+                              </ng-template>
+                          </td>
+                          <td [attr.data-title]="'actions'" *ngIf="showDefaultOptionsColumn">
+                              <lib-table-actions-td [tdItem]="row"
+                              [displayActions]="displayActions" (onBtnClickCallBack)="onDefaultOptionsColumnClick($event)">
+                              </lib-table-actions-td>
+                          </td>
+                      </tr>
+                  </tbody>
+              </ng-container>
+              <ng-template #elseEmptyTemplate>
+                  <tbody>
+                      <tr>
+                          <td [attr.colspan]="columnConfigs.length">
+                              {{emptyListMessage|translate}}
+                          </td>
+                      </tr>
+                  </tbody>
+              </ng-template>
+
+          </table>
+      </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="(getTableViewItems()?.length)??0>0" >
+  <lib-awesome-pager [pageSize]="pagerPageSize" [totalItemsCount]="totalItemsCountIfLazyloading"
+  (onPageChanged)="onPageChanged($event)" (onPageSizeChanged)="onPageSizeChanged($event)">
+  </lib-awesome-pager>
+</div>
