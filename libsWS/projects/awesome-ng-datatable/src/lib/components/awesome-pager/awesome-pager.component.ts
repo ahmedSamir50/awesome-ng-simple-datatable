@@ -4,7 +4,8 @@ import { PagerService } from '../../services/pager.service';
 @Component({
   selector: 'lib-awesome-pager',
   templateUrl: './awesome-pager.component.html',
-  styleUrls: ['./awesome-pager.component.css']
+  styleUrls: ['./awesome-pager.component.css'],
+  providers:[PagerService]
 })
 export class AwesomePagerComponent implements OnInit, OnChanges {
   @Input() items: any[];

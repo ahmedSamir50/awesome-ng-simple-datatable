@@ -3,7 +3,7 @@ import { PagerResult } from '../models/awesomemodels';
 
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'any',
 })
 export class PagerService {
   getPager(totalItems: number, currentPage: number = 1, pageSize: number = 10):PagerResult {

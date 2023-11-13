@@ -10,7 +10,6 @@ import {
 } from '@angular/core';
 import '../../helpers/arrayExtensions';
 
-import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import {GenericTableColumnConfig , ExportAs , ApiResponse , ListPagedResultDto, PagerResult} from '../../models/awesomemodels'
 import { PagerService } from '../../services/pager.service';
@@ -21,6 +20,7 @@ import { extractDeepPropFromObject } from '../../helpers/helpers';
     templateUrl: './awesome-ng-datatable.component.html',
     styleUrls: ['./awesome-ng-datatable.component.css'],
     encapsulation: ViewEncapsulation.Emulated,
+    providers:[PagerService]
 })
 export class AwesomeNgDataTableComponent implements OnInit, OnChanges, DoCheck {
     @Input() columnConfigs: Array<GenericTableColumnConfig> = [];
@@ -57,7 +57,7 @@ export class AwesomeNgDataTableComponent implements OnInit, OnChanges, DoCheck {
     selectedRow: any;
     currentViewItems: Array<any> = [];
     currentPage: number = 1;
-    constructor(private pagerService: PagerService, private translate: TranslateService) { }
+    constructor(private pagerService: PagerService) { }
     ngOnInit() {
         this.datePipePreviewFormate = !this.showDateTimeWhenFormattingDates ? 'd MMMM y' : 'd MMMM y , h:mm a';
         if (this.showDefaultOptionsColumn && !this.displayActions) {
@@ -150,12 +150,12 @@ export class AwesomeNgDataTableComponent implements OnInit, OnChanges, DoCheck {
     getDatePropFormatted(row:object, colKey:string, deepProp = false, colSuffix:string|null = null) {
         const propVal = deepProp ? this.extractDeepProp(row, colKey) : this.extractSimpleProp(row, colKey);
         try {
-            let dateVal = new DatePipe(this.translate.currentLang).transform(propVal, this.datePipePreviewFormate);
+            let dateVal = new DatePipe('en').transform(propVal, this.datePipePreviewFormate);
             // too old date / invalided date / < year 1000
             if (new Date(propVal).getFullYear() < 1000)
                 dateVal = '-';
 
-            return colSuffix && colSuffix?.length > 1 ? `${dateVal} ${this.translate.instant(colSuffix)}` : dateVal;
+            return colSuffix && colSuffix?.length > 1 ? `${dateVal} ${colSuffix}` : dateVal;
         } catch (error) {
             return propVal;
         }

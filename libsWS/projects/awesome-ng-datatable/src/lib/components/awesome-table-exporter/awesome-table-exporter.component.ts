@@ -13,7 +13,7 @@ import * as _ from 'underscore';
   templateUrl: './awesome-table-exporter.component.html',
   styleUrls: ['./awesome-table-exporter.component.css']
 })
-export class AwesomeTableExporterComponent implements OnInit, OnDestroy {
+export class AwesomeTableExporterComponent implements  OnDestroy {
   public iconNames = IconNamesEnum;
   public ExportAs = ExportAs;
   @Input() isExportable = true;
@@ -28,10 +28,8 @@ export class AwesomeTableExporterComponent implements OnInit, OnDestroy {
   private fullExportLazySubscriptions: Subscription[] = [];
 
   private selectedExportAllOption: 'currentPage' | 'all' = 'currentPage';
-  constructor(private translate: TranslateService) { }
-
-
-  ngOnInit(): void { }
+ 
+  
 
 
   exportEXCEL(selectedExportOption: 'currentPage' | 'all' = 'currentPage', asCSV = false) {
@@ -47,8 +45,7 @@ export class AwesomeTableExporterComponent implements OnInit, OnDestroy {
                           this.items = res.value.items;
                           const workbook = new Workbook();
                           const worksheet = workbook.addWorksheet(this.exportedDataTitle);
-                          const { arrOfHeaders, arrDataAsTableBody, dataKeys }:
-                              { arrOfHeaders: string[]; arrDataAsTableBody: any[]; dataKeys: string[] } =
+                          const { arrOfHeaders, arrDataAsTableBody, dataKeys }:{ arrOfHeaders: string[]; arrDataAsTableBody: any[]; dataKeys: string[] } =
                               this.getExportTableHeadersAndDataRow();
                           const headersAsExcelColumn = arrOfHeaders.map((hV, hIdx) => ({
                               header: hV, key: dataKeys[hIdx], width: 10, style: { font: { name: 'Arial Black', size: 10 } }
@@ -110,7 +107,12 @@ export class AwesomeTableExporterComponent implements OnInit, OnDestroy {
       this.exportEXCEL(selectedExportOption, true);
   }
 
-  private getExportTableHeadersAndDataRow() {
+  private getExportTableHeadersAndDataRow(): {
+    arrOfHeaders: any[];
+    arrDataAsTableBody: any[];
+    dataKeys: string[];
+}
+ {
 
       let exportableColumns = this.columnConfigs && this.columnConfigs.length > 0 ?
           this.columnConfigs.filter(exp => exp.exportableColumn??true) :
@@ -118,12 +120,9 @@ export class AwesomeTableExporterComponent implements OnInit, OnDestroy {
       if (exportableColumns.length == 0)
           exportableColumns = this.columnConfigs;
 
-      const arrKeys = [... new Set([...exportableColumns.map(x => {
-          if (x.keyAr && this.translate.currentLang == 'ar')
-              return x.keyAr
-          else return x.key;
-      })])];
-      const arrOfHeaders = exportableColumns.map((x) => { if (arrKeys.includes(x.key)) { return !x.headerIsTranslationKey ? x.header : this.translate.instant(x.header); } });
+      const arrKeys = [... new Set([...exportableColumns.map(x => { return x.key;})])];
+      //@ts-ignore
+      const arrOfHeaders = exportableColumns.filter((x:any)=>arrKeys.includes(x.key)).map((x:any) => x.header);
       const arrData:any[] = [];
       this.items.forEach(elem => {
           const obj = {};

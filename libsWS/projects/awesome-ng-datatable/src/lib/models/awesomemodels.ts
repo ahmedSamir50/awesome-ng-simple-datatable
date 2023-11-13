@@ -23,14 +23,14 @@ export class ApiResponse<T> {
     /// Gets or sets the value.
     /// </summary>
     value: T | undefined = undefined;
-
-    correlationId?: string | undefined = undefined;
+   /// <summary></summary>
+    correlationId? : string | undefined = undefined;
 }
 
 
 export class GenericTableColumnConfig {
     header: string;
-    headerIsTranslationKey?: boolean = true;
+   // headerIsTranslationKey?: boolean = true;
     key: string;
     keyAr?: string | null = null;
     suffixKey?: string | null = '';
@@ -63,8 +63,8 @@ export interface PagerResult {
 }
 
 export class ListPagedResultDto<T> {
-  items: Array<T> | Array<any>;
-  totalRecords: number;
+  items: Array<T> | Array<any>=[];
+  totalRecords: number=0;
 }
 
 

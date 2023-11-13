@@ -1,0 +1,26 @@
+<section>
+  <div class="container">
+    <div class="page-wrapper">
+      <div class="page-content">
+        <div class="row">
+          <div class="col-12">
+            <legend class="sub-title" translate>TEST </legend>
+          </div>
+        </div>
+
+        <div class="row">
+          <awesome-ng-dataTable-component
+              [columnConfigs]="citiesTableConfig"
+              [tableItems]="items"
+          ></awesome-ng-dataTable-component>
+        </div>
+
+        <div class="row" *ngIf="0<=0">
+          <div class="col-12">
+            <p class="no-data-found">{{ "NoDataDisplay"| translate }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

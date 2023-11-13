@@ -22,7 +22,7 @@
 <div class="row" *ngIf="showTotalItemsCount">
   <div class="col-12 d-flex justify-content-end mb-3">
       <div class="table-total-count">
-          <span>{{'totalItemsCount'|translate}} </span>
+          <span>{{'totalItemsCount'}} </span>
           <span> {{getTotalItemsCount()}} </span>
 
       </div>
@@ -37,16 +37,15 @@
 
           <table class="table table-bordered">
               <thead>
-                  <th [attr.data-th]="col.headerIsTranslationKey ?(col.header|translate):col.header" *ngFor="let col of columnConfigs" [ngStyle]="{'width':((col.colSize??1)/12*100)}">
-                      <span *ngIf="col.headerIsTranslationKey">{{ col.header | translate }}</span>
-                      <span *ngIf="!col.headerIsTranslationKey">{{ col.header }}</span>
+                  <th [attr.data-th]="col.header" *ngFor="let col of columnConfigs" [ngStyle]="{'width':((col.colSize??1)/12*100)}">
+                      <span >{{ col.header  }}</span>
                   </th>
-                  <th *ngIf="showDefaultOptionsColumn">{{'Actions' | translate}}</th>
+                  <th *ngIf="showDefaultOptionsColumn">{{'Actions' }}</th>
               </thead>
               <ng-container *ngIf="(getTableViewItems()?.length)??0>0; else elseEmptyTemplate">
                   <tbody>
                       <tr *ngFor="let row of getTableViewItems()" [class.selected]="selectedRow === row && enableSelection" (click)="tableRowClicked(row)">
-                          <td [attr.data-th]="col.headerIsTranslationKey ?(col.header|translate):col.header" *ngFor="let col of columnConfigs">
+                          <td [attr.data-th]="col.header" *ngFor="let col of columnConfigs">
                               <ng-container *ngIf="!col.customCellTemplate; else customCellTemplate">
                                   <!-- if property is object in depth -->
                                   <ng-container *ngIf="col.key.toLowerCase().indexOf('.')!==-1">
@@ -54,7 +53,7 @@
                                           {{ getDatePropFormatted(row , col.key , true , col.suffixKey) }}
                                       </ng-container>
                                       <ng-container *ngIf="col.key.toLowerCase().indexOf('date')===-1">
-                                          {{ extractDeepProp( row , col.key) }} {{col.suffixKey??"" | translate}}
+                                          {{ extractDeepProp( row , col.key) }} {{col.suffixKey??"" }}
                                       </ng-container>
                                   </ng-container>
                                   <!-- If Normal object prop -->
@@ -63,7 +62,7 @@
                                           {{ getDatePropFormatted(row , col.key , false , col.suffixKey) }}
                                       </ng-container>
                                       <ng-container *ngIf="col.key.toLowerCase().indexOf('date')===-1">
-                                          {{ extractSimpleProp( row , col.key) }} {{col.suffixKey??"" | translate}}
+                                          {{ extractSimpleProp( row , col.key) }} {{col.suffixKey??"" }}
                                       </ng-container>
                                   </ng-container>
 
@@ -83,7 +82,7 @@
                   <tbody>
                       <tr>
                           <td [attr.colspan]="columnConfigs.length">
-                              {{emptyListMessage|translate}}
+                              {{emptyListMessage}}
                           </td>
                       </tr>
                   </tbody>

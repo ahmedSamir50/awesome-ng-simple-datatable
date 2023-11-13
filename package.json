@@ -1,13 +1,20 @@
 {
   "dependencies": {
-    "@ngx-translate/core": "^15.0.0",
     "exceljs": "^4.3.0",
     "file-saver": "^2.0.5",
     "ngx-bootstrap-icons": "^1.9.2",
-    "underscore": "^1.13.6"
+    "underscore": "^1.13.6",
+    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/http-loader": "^7.0.0"
   },
   "devDependencies": {
     "@types/file-saver": "^2.0.6",
-    "@types/underscore": "^1.11.12"
+    "@types/underscore": "^1.11.12",
+    "exceljs": "^4.3.0",
+    "file-saver": "^2.0.5",
+    "ngx-bootstrap-icons": "^1.9.2",
+    "underscore": "^1.13.6",
+    "@ngx-translate/core": "^14.0.0",
+    "@ngx-translate/http-loader": "^7.0.0"
   }
 }
